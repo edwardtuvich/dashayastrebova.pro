@@ -31,6 +31,8 @@ up();document.addEventListener('DOMContentLoaded',up);addEventListener('load',up
   window.DY_LANG='en';
   if(en){en.addEventListener('click',function(){setLang('en')});ru.addEventListener('click',function(){setLang('ru')})}
   var saved=null;try{saved=localStorage.getItem('dy-lang')}catch(e){}
+  /* v9: re-flow headings after web fonts load */
+  try{document.fonts&&document.fonts.ready.then(function(){root.classList.add('fl');void document.body.offsetHeight;root.classList.remove('fl')})}catch(e){}
   /* v9: Russian-speaking browsers open in Russian until the visitor picks a language */
   if(!saved){try{var nl=(navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language||'']);
     for(var i=0;i<nl.length;i++){var c=String(nl[i]).toLowerCase().slice(0,2);if(c==='ru'||c==='uk'||c==='be'||c==='kk'){saved='ru';break}if(c==='en')break}}catch(e){}}
@@ -258,7 +260,7 @@ up();document.addEventListener('DOMContentLoaded',up);addEventListener('load',up
     done:'Copied. Paste it into WhatsApp, an email to '+MAIL+' or an Instagram DM.',fail:'Select the text below and copy it:',empty:'Pick what you need or write a few words first.',noreach:'Leave an email, WhatsApp or Telegram so I can reply.',
     l:{need:'Need',about:'Project',name:'From',when:'Deadline',budget:'Budget',reach:'Contact'},subj:'New project',hi:'Hello Dasha! A brief from your site:'},
    ru:{h:'Бриф за минуту',need:'Что нужно?',opts:['Реклама или клип','AI-мир бренда','AI-ролик с музыкой','Фотокампания','Обложка или клип артисту','Другое'],
-    about:'Пара слов о проекте',name:'Имя и компания',when:'Срок',budget:'Бюджет, USD или EUR',reach:'Ваша почта, WhatsApp или Telegram',
+    about:'Пара слов о проекте',name:'Имя и компания',when:'Срок',budget:'Бюджет, ₽',reach:'Ваша почта, WhatsApp или Telegram',
     wa:'Отправить в WhatsApp',mail:'Отправить на почту',copy:'Скопировать бриф',
     sentWa:'Откроется WhatsApp с готовым брифом. Нажмите «Отправить», и я отвечу.',sentMail:'Откроется почта с готовым брифом. Нажмите «Отправить», и я отвечу.',
     done:'Скопировано. Вставьте в WhatsApp, в письмо на '+MAIL+' или в директ Instagram.',fail:'Выделите текст ниже и скопируйте:',empty:'Сначала выберите, что нужно, или напишите пару слов.',noreach:'Оставьте почту, WhatsApp или Telegram, чтобы я могла ответить.',

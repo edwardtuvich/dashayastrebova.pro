@@ -2311,3 +2311,7 @@ body:has(main.mk5) .contact .brief .br-o.on{background:#fff!important;border-col
 .jv-p i,.pv-b i{width:clamp(40px,3.4vw,52px)!important;background:rgba(19,19,22,.55)!important;border:1.5px solid rgba(255,255,255,.85);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:transform .25s,background .25s}
 .jv-p i::before,.pv-b i::before{border-left:clamp(11px,1vw,14px) solid #fff!important;border-block:clamp(7px,.62vw,9px) solid transparent!important;margin-left:3px!important}
 .jv-p:hover i,.pv-b:hover i{transform:scale(1.06);background:rgba(19,19,22,.8)!important}
+/* v9 Safari: balanced headings broke into ragged lines after the web fonts swapped in. Safari wraps normally, other browsers keep balance. */
+@supports (font:-apple-system-body) and (not (-moz-appearance:none)){
+  h1,h2,h3,h4,.mf-h,[class*="-h"],[class*="title"]{text-wrap:wrap!important}
+}
