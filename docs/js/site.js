@@ -31,7 +31,14 @@ up();document.addEventListener('DOMContentLoaded',up);addEventListener('load',up
   window.DY_LANG='en';
   if(en){en.addEventListener('click',function(){setLang('en')});ru.addEventListener('click',function(){setLang('ru')})}
   var saved=null;try{saved=localStorage.getItem('dy-lang')}catch(e){}
+  /* v9: Russian-speaking browsers open in Russian until the visitor picks a language */
+  if(!saved){try{var nl=(navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language||'']);
+    for(var i=0;i<nl.length;i++){var c=String(nl[i]).toLowerCase().slice(0,2);if(c==='ru'||c==='uk'||c==='be'||c==='kk'){saved='ru';break}if(c==='en')break}}catch(e){}}
   if(saved==='ru')setLang('ru');
+  /* v9: Telegram first for Russian visitors, WhatsApp first in English */
+  function tgOrder(){var r=window.DY_LANG==='ru';document.querySelectorAll('.c-tg').forEach(function(tg){var p=tg.parentNode;if(!p)return;
+    if(r){if(p.firstElementChild!==tg)p.insertBefore(tg,p.firstElementChild)}else{var wa=p.querySelector('.c-wa');if(wa&&wa.nextElementSibling!==tg)p.insertBefore(tg,wa.nextElementSibling)}})}
+  document.addEventListener('dy-lang',tgOrder);if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',tgOrder);else tgOrder();
 
   /* type: local woff2 with font-display:swap, the page is never hidden.
      If the local files are missing (a host that did not get fonts/), fall back to Google Fonts once. */
