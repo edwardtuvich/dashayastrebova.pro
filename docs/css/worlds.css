@@ -1,0 +1,7 @@
+html[data-world="ai"]{--bg:#ECEEF1;--ink:#121318;--gold:#5B4BE0;color-scheme:light}
+html[data-world="photo"]{--bg:#0A0A0A;--ink:#F1F1F1;--gold:#E0412F;color-scheme:dark}
+html[data-world="music"]{--bg:#120B1A;--ink:#F2EDF8;--gold:#C6A8FF;color-scheme:dark}
+html[data-world="video"]{--bg:#0B1713;--ink:#EAF4EF;--gold:#8EDCB8;color-scheme:dark}
+html[data-world="art"]{--bg:#F5F5F3;--ink:#151515;--gold:#A3246A;color-scheme:light}
+html[data-world="archive"]{--bg:#101012;--ink:#ECECEE;--gold:#B9C2CC;color-scheme:dark}
+html[data-world="about"]{--bg:#F4F3EF;--ink:#131316;--gold:#2B3FD6;color-scheme:light}

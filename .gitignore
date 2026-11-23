@@ -1,0 +1,13 @@
+# служебное
+verify_report.json
+export_report.json
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+# сниппет аналитики с личным идентификатором хранится локально
+analytics.html
+# ключи никогда не коммитим
+*.pem
+id_*
+.env

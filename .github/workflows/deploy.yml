@@ -1,0 +1,37 @@
+# Путь B: выкладка на свой сервер по rsync через SSH при каждом push в main.
+# Работает только когда в Settings → Secrets and variables → Actions → Variables задано DEPLOY_TO_SERVER = true.
+# Для GitHub Pages (путь A) этот файл не нужен и ничего не делает.
+name: Deploy to server
+on:
+  push:
+    branches: [main]
+    paths: ['docs/**']
+  workflow_dispatch:
+concurrency:
+  group: deploy-server
+  cancel-in-progress: true
+jobs:
+  deploy:
+    if: ${{ vars.DEPLOY_TO_SERVER == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: SSH key
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+        run: |
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key && chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+      - name: Rsync docs/ to the server
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          test -n "$DEPLOY_PATH" || { echo "DEPLOY_PATH is empty"; exit 1; }
+          rsync -az --delete --exclude 'CNAME' --exclude '.nojekyll' \
+            -e "ssh -i ~/.ssh/deploy_key -p ${SSH_PORT:-22} -o StrictHostKeyChecking=yes" \
+            docs/ "$SSH_USER@$SSH_HOST:$DEPLOY_PATH/"

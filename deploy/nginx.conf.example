@@ -1,0 +1,41 @@
+# Пример для своего сервера (путь B). Файл: /etc/nginx/sites-available/dashayastrebova.pro
+# Сертификат: sudo certbot --nginx -d dashayastrebova.pro -d www.dashayastrebova.pro
+server {
+    listen 80;
+    listen [::]:80;
+    server_name dashayastrebova.pro www.dashayastrebova.pro;
+    return 301 https://dashayastrebova.pro$request_uri;
+}
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name www.dashayastrebova.pro;
+    ssl_certificate     /etc/letsencrypt/live/dashayastrebova.pro/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/dashayastrebova.pro/privkey.pem;
+    return 301 https://dashayastrebova.pro$request_uri;
+}
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name dashayastrebova.pro;
+    ssl_certificate     /etc/letsencrypt/live/dashayastrebova.pro/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/dashayastrebova.pro/privkey.pem;
+
+    root /var/www/dashayastrebova.pro;      # сюда workflow кладёт содержимое docs/
+    index index.html;
+    error_page 404 /404.html;
+    charset utf-8;
+
+    location / { try_files $uri $uri/ =404; }
+
+    # страницы всегда свежие
+    location ~* \.html$ { add_header Cache-Control "no-cache"; }
+    # css и js подключены с ?v=N, картинки и видео не меняются под тем же именем
+    location ~* \.(css|js)$ { add_header Cache-Control "public, max-age=604800"; }
+    location ~* \.(jpg|jpeg|png|webp|svg|ico|woff2|mp4)$ { add_header Cache-Control "public, max-age=2592000"; }
+
+    gzip on;
+    gzip_types text/css application/javascript image/svg+xml application/xml text/plain;
+    add_header X-Content-Type-Options nosniff always;
+    add_header Referrer-Policy strict-origin-when-cross-origin always;
+}
