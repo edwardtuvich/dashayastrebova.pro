@@ -2332,3 +2332,5 @@ body:has(main.mk5) .contact .brief .br-o.on{background:#fff!important;border-col
 .bts-i video{width:100%;height:100%;object-fit:cover;display:block}
 @keyframes btsrun{to{transform:translateX(calc(-50% - clamp(5px,.6vw,8px)))}}
 @media (prefers-reduced-motion:reduce){.bts-t{animation:none}.bts-run{overflow-x:auto}}
+.bts-i.bts-v{aspect-ratio:9/16}
+.bts-i{width:auto;height:clamp(240px,23vw,350px)}
