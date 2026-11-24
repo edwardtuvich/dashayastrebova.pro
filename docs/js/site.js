@@ -357,3 +357,10 @@ v.addEventListener('play',function(){b.classList.add('on')});v.addEventListener(
 (function(){[].forEach.call(document.querySelectorAll('img[data-lqbg]'),function(x){
   function done(){if(x.naturalWidth){x.style.backgroundImage='none';x.removeAttribute('data-lqbg')}}
   if(x.complete)done();else x.addEventListener('load',done,{once:true})})})();
+
+  /* v9 home: behind-the-scenes strip loads and plays only while on screen */
+(function(){var b=document.querySelector('.bts');if(!b)return;var vs=[].slice.call(b.querySelectorAll('video'));
+    function on(){vs.forEach(function(v){if(!v.src&&v.dataset.src)v.src=v.dataset.src;var p=v.play();if(p&&p.catch)p.catch(function(){})})}
+    if(!('IntersectionObserver' in window)){on();return}
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){on();io.disconnect()}})},{rootMargin:'300px'});io.observe(b)})();
+
