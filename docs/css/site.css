@@ -2334,3 +2334,4 @@ body:has(main.mk5) .contact .brief .br-o.on{background:#fff!important;border-col
 @media (prefers-reduced-motion:reduce){.bts-t{animation:none}.bts-run{overflow-x:auto}}
 .bts-i.bts-v{aspect-ratio:9/16}
 .bts-i{width:auto;height:clamp(240px,23vw,350px)}
+.bts-i.bts-w{aspect-ratio:960/506}
