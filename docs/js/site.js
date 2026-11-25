@@ -360,7 +360,9 @@ v.addEventListener('play',function(){b.classList.add('on')});v.addEventListener(
 
   /* v9 home: behind-the-scenes strip loads and plays only while on screen */
 (function(){var b=document.querySelector('.bts');if(!b)return;var vs=[].slice.call(b.querySelectorAll('video'));
-    function on(){vs.forEach(function(v){if(!v.src&&v.dataset.src)v.src=v.dataset.src;var p=v.play();if(p&&p.catch)p.catch(function(){})})}
-    if(!('IntersectionObserver' in window)){on();return}
-    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){on();io.disconnect()}})},{rootMargin:'300px'});io.observe(b)})();
+    function go(v){if(!v.src&&v.dataset.src)v.src=v.dataset.src;v.muted=true;var p=v.play();if(p&&p.catch)p.catch(function(){})}
+    if(!('IntersectionObserver' in window)){vs.forEach(go);return}
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){var v=e.target;if(e.isIntersecting)go(v);else if(v.src)v.pause()})},{rootMargin:'200px'});
+    vs.forEach(function(v){v.addEventListener('stalled',function(){if(!v.paused)return;go(v)});io.observe(v)});
+    document.addEventListener('visibilitychange',function(){if(!document.hidden)vs.forEach(function(v){var r=v.getBoundingClientRect();if(v.src&&r.right>0&&r.left<innerWidth&&r.bottom>0&&r.top<innerHeight)go(v)})})})();
 
